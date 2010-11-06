@@ -10,7 +10,7 @@ while line = gets.chomp!
   begin
     case line
     when /^(q|quit|exit|bye)$/
-      print "bye!\n"
+      print "bye bye!\n".blink.cyan
       exit
     when /^\s*=\s*/
       str = line.sub($&, '')
