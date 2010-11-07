@@ -22,7 +22,7 @@ while line = Readline.readline("> ", true)
       print "\nto set a string, input string with prepend '='. ex. = Color is fun!\n"
     when /^rainbow$/
       c = %w(red green yellow blue magenta cyan white)
-      s = rand(2) < 1 ? str.chars : str.split(/\b/)
+      s = [str.chars, str.split(/\b/)][rand(2)]
       puts s.inject("") { |mem, chr| mem << chr.send(c[rand(c.length)]) }
     else
       puts line.split(/[,\s]+/).inject(str) { |mem, color| mem.send color }
