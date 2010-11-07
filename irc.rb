@@ -15,7 +15,7 @@ while line = gets.chomp!
     when /^\s*=\s*/
       str = line.sub($&, '')
       print str, "\n> "
-    when /^(help|colors|attrs)$/
+    when /^(help|h|colors|attrs)$/
       print "input one or more attributes from followings: ex. bold red on_green\n\n"
       puts Term::ANSIColor.attributes.map { |attr| "#{attr}".send(attr) }.join(" ")
       print "\nto set a string, input string with prepend '='. ex. = Color is fun!\n> "
