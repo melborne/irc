@@ -1,32 +1,33 @@
 require "term/ansicolor"
+require "readline"
 String.send(:include, Term::ANSIColor)
 
 str = 'Ruby is not Gem!'
 
 c = %w(red blue yellow green)
-print %w(Hello, try interactive colors!).map { |w| w.send(c.shift) }.join(" "), "\n> "
+puts %w(Hello, try interactive colors!).map { |w| w.send(c.shift) }.join(" ")
 
-while line = gets.chomp!
+while line = Readline.readline("> ", true)
   begin
-    case line
+    case line.strip
     when /^(q|quit|exit|bye)$/
-      print "bye bye!\n".blink.cyan
+      puts "bye bye!".blink.cyan
       exit
     when /^\s*=\s*/
       str = line.sub($&, '')
-      print str, "\n> "
+      puts str
     when /^(help|h|colors|attrs)$/
       print "input one or more attributes from followings: ex. bold red on_green\n\n"
       puts Term::ANSIColor.attributes.map { |attr| "#{attr}".send(attr) }.join(" ")
-      print "\nto set a string, input string with prepend '='. ex. = Color is fun!\n> "
-    when /^rainbow/
+      print "\nto set a string, input string with prepend '='. ex. = Color is fun!\n"
+    when /^rainbow$/
       c = %w(red green yellow blue magenta cyan white)
       s = rand(2) < 1 ? str.chars : str.split(/\b/)
-      print s.inject("") { |mem, chr| mem << chr.send(c[rand(c.length)]) }, "\n> "
+      puts s.inject("") { |mem, chr| mem << chr.send(c[rand(c.length)]) }
     else
-      print line.split(/[,\s]+/).inject(str) { |mem, color| mem.send color }, "\n> "
+      puts line.split(/[,\s]+/).inject(str) { |mem, color| mem.send color }
     end
   rescue
-    print "is that color?\n> "
+    puts "is that color?"
   end
 end
