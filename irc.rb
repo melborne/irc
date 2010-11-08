@@ -18,10 +18,14 @@ while line = Readline.readline("> ", true)
       str = line.sub($&, '')
       puts str
     when /^(help|h|colors|attrs)$/
-      print "input one or more attributes from followings: ex. bold red on_green\n\n"
-      puts ATTRS.map { |attr| "#{attr}".send(attr) }.join(" ")
-      print "\nto set a string, input string with prepend '='. ex. = Is Ruby a Jam?\n"
-      print "or try 'rainbow' to fun!\n"
+      print <<-EOS
+       Input one or more attributes from followings: ex. bold red on_green
+
+       #{ATTRS.map { |attr| "#{attr}".send(attr) }.join(" ")}
+
+       To set a string, input string with prepend '='. ex. = Is Ruby a Jam?
+       Or try 'rainbow' to fun!
+      EOS
     when /^rainbow$/
       s = [str.chars, str.split(/\b/), str.split(/\b/).reverse][rand(3)]
       puts s.inject("") { |mem, chr| mem << chr.send(C[rand(C.length)]) }
