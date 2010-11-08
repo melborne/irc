@@ -26,9 +26,9 @@ while line = Readline.readline("> ", true)
       s = [str.chars, str.split(/\b/), str.split(/\b/).reverse][rand(3)]
       puts s.inject("") { |mem, chr| mem << chr.send(C[rand(C.length)]) }
     else
-      attrs = line.split(/[,\s]+/)
-      raise unless attrs.all? { |attr| ATTRS.include? attr.intern }
-      puts attrs.inject(str) { |mem, color| mem.send color }
+      inputs = line.split(/[,\s]+/)
+      raise unless (inputs.map(&:intern) - ATTRS).empty?
+      puts inputs.inject(str) { |mem, color| mem.send color }
     end
   rescue
     puts "is that color?"
