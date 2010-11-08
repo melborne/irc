@@ -4,7 +4,8 @@ String.send(:include, Term::ANSIColor)
 
 str = 'Ruby is not Gem!'
 
-C = %w(red green yellow blue magenta cyan white)
+ATTRS = Term::ANSIColor.attributes
+C = (ATTRS*" ")[/red.*?white/].split(" ")
 puts %w(Hello, try interactive colors!).map.with_index { |w, i| w.send(C[i]) }.join(" ")
 
 while line = Readline.readline("> ", true)
@@ -18,14 +19,16 @@ while line = Readline.readline("> ", true)
       puts str
     when /^(help|h|colors|attrs)$/
       print "input one or more attributes from followings: ex. bold red on_green\n\n"
-      puts Term::ANSIColor.attributes.map { |attr| "#{attr}".send(attr) }.join(" ")
+      puts ATTRS.map { |attr| "#{attr}".send(attr) }.join(" ")
       print "\nto set a string, input string with prepend '='. ex. = Is Ruby a Jam?\n"
       print "or try 'rainbow' to fun!\n"
     when /^rainbow$/
       s = [str.chars, str.split(/\b/), str.split(/\b/).reverse][rand(3)]
       puts s.inject("") { |mem, chr| mem << chr.send(C[rand(C.length)]) }
     else
-      puts line.split(/[,\s]+/).inject(str) { |mem, color| mem.send color }
+      attrs = line.split(/[,\s]+/)
+      raise unless attrs.all? { |attr| ATTRS.include? attr.intern }
+      puts attrs.inject(str) { |mem, color| mem.send color }
     end
   rescue
     puts "is that color?"
