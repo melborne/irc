@@ -7,7 +7,7 @@ class Irc
   COLORS = (ATTRS*" ")[/red.*?white/].split(" ")
 
   def initialize(str='Ruby is not Gem!')
-    @str = str
+    @str = @str_defo = str
   end
 
   def run
@@ -21,6 +21,9 @@ class Irc
           exit
         when set_string?
           @str = line.sub($&, '')
+          puts @str
+        when reset?
+          @str = @str_defo
           puts @str
         when help?
           print help_manual
@@ -48,6 +51,10 @@ class Irc
 
   def set_string?
     /^\s*=\s*/
+  end
+
+  def reset?
+    /^reset/i
   end
 
   def help?
